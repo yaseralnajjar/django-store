@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adetech Store</title>
+</head>
+<body>
+    <div>
+        <h2>Products</h2>
+        <ul>
+            {% for product in products %}
+            <li>
+                <div>{{product.brand}}</div>
+                <a href="{% url 'product_details' product.pk %}">{{product.title}}</a>
+                <div>${{product.price}}</div>
+            </li>
+            {% empty %}
+            <div>Sorry! We have no product available till now!</div>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{product.title}} | Adetech Store</title>
+</head>
+<body>
+    <div>
+        <h2>{{product.title}}</h2>
+        <div>Brand: {{product.brand}}</div>
+        <div>Description{{product.description}}</div>
+        <div>Price: ${{product.price}}</div>
+        <a href="{% url 'home'%}">Return to products list</a>
+    </div>
+</body>
+</html>
