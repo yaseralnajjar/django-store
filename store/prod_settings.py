@@ -6,7 +6,7 @@ from .settings import *
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['morning-depths-38898.herokuapp.com']
 
