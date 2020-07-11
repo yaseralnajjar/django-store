@@ -12,7 +12,7 @@ if debug_option == 'true':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['morning-depths-38898.herokuapp.com']
+ALLOWED_HOSTS = ['morning-depths-38898.herokuapp.com', 'yaseralnajjar2020.pythonanywhere.com']
 
 DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
