@@ -1,54 +1,52 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
 from .models import Product
 from .forms import AddProductForm
 
-# Create your views here.
 
+def product_list(request):
 
-def products_list(request):
+    # We can use Class based views like ListView
     products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'products/products-list.html', context)
+    return render(request, 'products/product_list.html', {'products': products})
 
 
 def product_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'products/product-details.html', context)
+    return render(request, 'products/product_details.html', {'product': product})
 
 
-def product_add(request):
-    if request.method == 'POST':
-        form = AddProductForm(request.POST)
+# Add our own decorator for superuser_required
+# better do add and edit product with django admin (customize admin)
+def add_product(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        if request.method == 'POST':
+            form = AddProductForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            return render(request, 'products/product-crud-successful.html', {'operation': 'Add'})
+            if form.is_valid():
+                form.save()
+                return render(request, 'products/add_product_success.html')
+        else:
+            form = AddProductForm()
+
+        return render(request, 'products/add_product.html', {'form': form})
     else:
-        form = AddProductForm()
-
-    return render(request, 'products/product-add-edit.html', {'form': form, 'operation': 'Add'})
+        return redirect('product_list')
 
 
-def product_edit(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+def edit_product(request, pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        product_to_edit = get_object_or_404(Product, pk=pk)
 
-    if request.method == 'POST':
-        form = AddProductForm(request.POST, instance=product)
+        if request.method == 'POST':
+            form = AddProductForm(request.POST, request.FILES, instance=product_to_edit)
 
-        if form.is_valid():
-            return render(request, 'products/product-crud-successful.html', {'operation': 'Edit'})
+            if form.is_valid():
+                form.save()
+                return render(request, 'products/add_product_success.html')
+        else:
+            form = AddProductForm(instance=product_to_edit)
+
+        return render(request, 'products/add_product.html', {'form': form})
     else:
-        form = AddProductForm(instance=product)
-
-    return render(request, 'products/product-add-edit.html', {'form': form, 'operation': 'Edit'})
-
-
-def product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    product.delete()
-
-    context = {
-        'product': product,
-        'operation': 'Delet'
-        }
-    return render(request, 'products/product-crud-successful.html', context)
+        return redirect('product_list')

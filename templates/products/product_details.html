@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block head_title %}{{product.title | capfirst }}{% endblock %}
+
+{% block content %}
+<section class="single-product-details clearfix">
+    <div class="product-details-img">
+        <img src="{{product.image.url}}" alt="" />
+    </div>
+    <div class="product-details-desc">
+        <div class="product-brand">{{product.brand | capfirst }}</div>
+        <h2 class="product-name">{{product.title | capfirst }}</h2>
+        <div class="product-price">${{product.price | floatformat:2 }}</div>
+        <p class="product-desc">
+            {{product.description}}
+        </p>
+        <div class="cart-btn-box">
+            <a href="{% url 'add_to_cart' product_id=product.id %}">Add to cart</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
